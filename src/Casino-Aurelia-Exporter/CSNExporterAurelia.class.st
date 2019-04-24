@@ -43,6 +43,14 @@ CSNExporterAurelia >> visitUIContainer: aContainer [
 ]
 
 { #category : #visiting }
+CSNExporterAurelia >> visitUIPanel: aPanel [
+	exportStream
+		nextPutAll: '<div>' , String crlf.
+	aPanel widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</div>' , String crlf
+]
+
+{ #category : #visiting }
 CSNExporterAurelia >> visitWidget: aWidget [
 	exportStream nextPutAll: '<widget non reconnu></widget non reconnu>',String crlf
 ]
