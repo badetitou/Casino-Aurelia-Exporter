@@ -72,9 +72,17 @@ CSNExporterAurelia >> visitUIContainer: aContainer [
 ]
 
 { #category : #visiting }
+CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
+	exportStream
+		nextPutAll: '<h1>' , String crlf.
+	"aContainer widgets do: [ :aWidget | self visit: aWidget ]."
+	exportStream nextPutAll: '</h1>' , String crlf
+]
+
+{ #category : #visiting }
 CSNExporterAurelia >> visitUIPanel: aPanel [
 	exportStream
-		nextPutAll: '<div ', (self attributesTagFor: aPanel) , '>' , String crlf.
+		nextPutAll: '<div' , (self attributesTagFor: aPanel) , '>' , String crlf.
 	aPanel widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</div>' , String crlf
 ]
