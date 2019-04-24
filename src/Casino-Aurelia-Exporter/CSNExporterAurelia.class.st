@@ -8,7 +8,36 @@ Class {
 }
 
 { #category : #visiting }
-CSNExporterAurelia >> prepareExport [ 	context := CSNContext new root: (FileSystem disk workingDirectory / model name) asFileReference; yourself.
+CSNExporterAurelia >> attributeMap [
+	^ {(CSNUIClass -> 'class')} asDictionary
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> attributesTagFor: aWidget [
+	^ ((aWidget attributes groupedBy: #class) asDictionary associations
+		collect: [ :mapAttributeNameValues | 
+			' '
+				,
+					(self context bindingAttributeMap
+						at: mapAttributeNameValues key
+						ifAbsent: [ 'unknowAttribute' ]) , '="'
+				,
+					((mapAttributeNameValues value asOrderedCollection
+						flatCollect: [ :attribute | (self visit: attribute) , ' ' ])
+						removeLast;
+						yourself) , '"' ]) flatten
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> prepareExport [
+	context := CSNContextAurelia new
+		root: (FileSystem disk workingDirectory / model name) asFileReference;
+		bindingAttributeMap: self attributeMap; yourself
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitAttribute: anAttribute [
+	^ anAttribute attributeValue 
 ]
 
 { #category : #visiting }
@@ -45,7 +74,7 @@ CSNExporterAurelia >> visitUIContainer: aContainer [
 { #category : #visiting }
 CSNExporterAurelia >> visitUIPanel: aPanel [
 	exportStream
-		nextPutAll: '<div>' , String crlf.
+		nextPutAll: '<div ', (self attributesTagFor: aPanel) , '>' , String crlf.
 	aPanel widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</div>' , String crlf
 ]
