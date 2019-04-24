@@ -21,14 +21,28 @@ self root ensureCreateDirectory.
 CSNExporterAurelia >> visitPage: aPage [
 	exportStream := (self root / (aPage name , '.html')) writeStream.
 	exportStream
-		nextPutAll: '<template>'.
-		
-		exportStream
-		nextPutAll: '</template>';
+		nextPutAll: '<template>',String crlf;
+		nextPutAll: '<page id=' , aPage name , '>',String crlf.
+	aPage widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream
+		nextPutAll: '</page>',String crlf;
+		nextPutAll: '</template>',String crlf;
 		flush;
 		close.
 	exportStream := (self root / (aPage name , '.css')) writeStream.
 	exportStream
 		flush;
 		close
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIContainer: aContainer [
+	exportStream nextPutAll: '<div><!-->widget non reconnu<-->',String crlf.
+	aContainer widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</div>',String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitWidget: aWidget [
+	exportStream nextPutAll: '<widget non reconnu></widget non reconnu>',String crlf
 ]
