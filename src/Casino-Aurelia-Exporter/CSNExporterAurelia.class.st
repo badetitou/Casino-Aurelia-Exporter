@@ -9,7 +9,8 @@ Class {
 
 { #category : #visiting }
 CSNExporterAurelia >> attributeMap [
-	^ {(CSNUIClass -> 'class')} asDictionary
+	^ {(CSNUIClass -> 'class').
+	(CSNUILabel -> 'text')} asDictionary
 ]
 
 { #category : #visiting }
@@ -73,8 +74,10 @@ CSNExporterAurelia >> visitUIContainer: aContainer [
 
 { #category : #visiting }
 CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
-	exportStream
-		nextPutAll: '<h1>' , String crlf.
+	exportStream nextPutAll: '<h1>' , String crlf.
+	aUIHeading1 attributes
+		select: [ :attribute | attribute isKindOf: CSNUILabel ]
+		thenDo: [ :attribute | exportStream nextPutAll: (self visit: attribute) ].
 	"aContainer widgets do: [ :aWidget | self visit: aWidget ]."
 	exportStream nextPutAll: '</h1>' , String crlf
 ]
