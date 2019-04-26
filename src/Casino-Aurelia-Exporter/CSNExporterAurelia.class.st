@@ -10,13 +10,14 @@ Class {
 { #category : #visiting }
 CSNExporterAurelia >> attributeMap [
 	^ {(CSNUIClass -> 'class').
-	(CSNUILabel -> 'text').
+	(CSNUILabel -> 'label').
 	(CSNUIWidth -> 'width').
 	(CSNUIAbsoluteWidth -> 'width').
 	(CSNUIRelativeWidth -> 'width').
 	(CSNUIAbsoluteHeight -> 'height').
-	(CSNUIRelativeHeight  -> 'height').
-	(CSNUIHeight -> 'height')} asDictionary
+	(CSNUIRelativeHeight -> 'height').
+	(CSNUIHeight -> 'height').
+	(CSNUIValue -> 'value')} asDictionary
 ]
 
 { #category : #visiting }
@@ -92,7 +93,6 @@ CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
 	aUIHeading1 attributes
 		select: [ :attribute | attribute isKindOf: CSNUILabel ]
 		thenDo: [ :attribute | exportStream nextPutAll: (self visit: attribute) ].
-	"aContainer widgets do: [ :aWidget | self visit: aWidget ]."
 	exportStream nextPutAll: '</h1>' , String crlf
 ]
 
@@ -100,6 +100,14 @@ CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
 CSNExporterAurelia >> visitUIInputDate: anInputDate [
 	exportStream
 		nextPutAll: '<input type="date"' , (self attributesTagFor: anInputDate) , '/>' , String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIInputRadio: anInputDate [
+	exportStream
+		nextPutAll:
+			'<input type="radio"' , (self attributesTagFor: anInputDate) , '/>'
+				, String crlf
 ]
 
 { #category : #visiting }
@@ -114,6 +122,15 @@ CSNExporterAurelia >> visitUIPanel: aPanel [
 		nextPutAll: '<div' , (self attributesTagFor: aPanel) , '>' , String crlf.
 	aPanel widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</div>' , String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIParagraph: aUIParagraph [
+	exportStream nextPutAll: '<p>'.
+	aUIParagraph attributes
+		select: [ :attribute | attribute isKindOf: CSNUILabel ]
+		thenDo: [ :attribute | exportStream nextPutAll: (self visit: attribute) ].
+	exportStream nextPutAll: '</p>' , String crlf
 ]
 
 { #category : #visiting }
