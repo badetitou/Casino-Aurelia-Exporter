@@ -75,7 +75,7 @@ CSNExporterAurelia >> visitUIContainer: aContainer [
 
 { #category : #visiting }
 CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
-	exportStream nextPutAll: '<h1>' , String crlf.
+	exportStream nextPutAll: '<h1>'.
 	aUIHeading1 attributes
 		select: [ :attribute | attribute isKindOf: CSNUILabel ]
 		thenDo: [ :attribute | exportStream nextPutAll: (self visit: attribute) ].
