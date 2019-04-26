@@ -51,12 +51,13 @@ self root ensureCreateDirectory.
 CSNExporterAurelia >> visitPage: aPage [
 	exportStream := (self root / (aPage name , '.html')) writeStream.
 	exportStream
-		nextPutAll: '<template>',String crlf;
-		nextPutAll: '<page id=' , aPage name , '>',String crlf.
+		nextPutAll: '<template>' , String crlf;
+		nextPutAll: '<require from="./' , aPage name,'.css"></require>';
+		nextPutAll: '<page id=' , aPage name , '>' , String crlf.
 	aPage widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream
-		nextPutAll: '</page>',String crlf;
-		nextPutAll: '</template>',String crlf;
+		nextPutAll: '</page>' , String crlf;
+		nextPutAll: '</template>' , String crlf;
 		flush;
 		close.
 	exportStream := (self root / (aPage name , '.css')) writeStream.
