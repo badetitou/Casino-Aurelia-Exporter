@@ -10,7 +10,13 @@ Class {
 { #category : #visiting }
 CSNExporterAurelia >> attributeMap [
 	^ {(CSNUIClass -> 'class').
-	(CSNUILabel -> 'text')} asDictionary
+	(CSNUILabel -> 'text').
+	(CSNUIWidth -> 'width').
+	(CSNUIAbsoluteWidth -> 'width').
+	(CSNUIRelativeWidth -> 'width').
+	(CSNUIAbsoluteHeight -> 'height').
+	(CSNUIRelativeHeight  -> 'height').
+	(CSNUIHeight -> 'height')} asDictionary
 ]
 
 { #category : #visiting }
@@ -26,7 +32,7 @@ CSNExporterAurelia >> attributesTagFor: aWidget [
 					((mapAttributeNameValues value asOrderedCollection
 						flatCollect: [ :attribute | (self visit: attribute) , ' ' ])
 						removeLast;
-						yourself) , '"' ]) flatten
+						yourself) , '"' ]) joinUsing: ''
 ]
 
 { #category : #visiting }
@@ -68,9 +74,16 @@ CSNExporterAurelia >> visitPage: aPage [
 
 { #category : #visiting }
 CSNExporterAurelia >> visitUIContainer: aContainer [
-	exportStream nextPutAll: '<div><!-->widget non reconnu<-->',String crlf.
+	exportStream
+		nextPutAll: '<div';
+		nextPutAll: (self attributesTagFor: aContainer);
+		nextPutAll: '><!-->widget non reconnu<-->';
+		nextPutAll: '></widget non reconnu>';
+		nextPutAll: String crlf.
 	aContainer widgets do: [ :aWidget | self visit: aWidget ].
-	exportStream nextPutAll: '</div>',String crlf
+	exportStream
+		nextPutAll: '</div>';
+		nextPutAll: String crlf
 ]
 
 { #category : #visiting }
@@ -84,6 +97,18 @@ CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
 ]
 
 { #category : #visiting }
+CSNExporterAurelia >> visitUIInputDate: anInputDate [
+	exportStream
+		nextPutAll: '<input type="date"' , (self attributesTagFor: anInputDate) , '/>' , String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIInputText: anInputText [
+	exportStream
+		nextPutAll: '<input' , (self attributesTagFor: anInputText) , '/>' , String crlf.
+]
+
+{ #category : #visiting }
 CSNExporterAurelia >> visitUIPanel: aPanel [
 	exportStream
 		nextPutAll: '<div' , (self attributesTagFor: aPanel) , '>' , String crlf.
@@ -92,6 +117,19 @@ CSNExporterAurelia >> visitUIPanel: aPanel [
 ]
 
 { #category : #visiting }
+CSNExporterAurelia >> visitUISelect: anInputDate [
+	exportStream
+		nextPutAll: '<select';
+		nextPutAll: (self attributesTagFor: anInputDate);
+		nextPutAll: '/>';
+		nextPutAll: String crlf
+]
+
+{ #category : #visiting }
 CSNExporterAurelia >> visitWidget: aWidget [
-	exportStream nextPutAll: '<widget non reconnu></widget non reconnu>',String crlf
+	exportStream
+		nextPutAll: '<widget non reconnu';
+		nextPutAll: (self attributesTagFor: aWidget);
+		nextPutAll: '></widget non reconnu>';
+		nextPutAll: String crlf
 ]
