@@ -17,10 +17,9 @@ BaselineOfCasinoAureliaExporter >> baseline: spec [
 { #category : #baselines }
 BaselineOfCasinoAureliaExporter >> defineDependencies: spec [
 	spec
-		baseline: 'Casino'
+		baseline: 'CasinoModelSilverlight'
 		with: [ spec
-				loads: 'core-extented';
-				repository: 'github://badetitou/Casino:master/src' ]
+				repository: 'github://badetitou/Casino-Model-Silverlight:master/src' ]
 ]
 
 { #category : #baselines }
@@ -34,5 +33,5 @@ BaselineOfCasinoAureliaExporter >> definePackages: spec [
 		repository: 'https://github.com/badetitou/Casino-Aurelia-Exporter';
 		package: 'BaselineOfCasinoAureliaExporter';
 		package: 'Casino-Aurelia-Exporter'
-			with: [ spec requires: #('Casino') ]
+			with: [ spec requires: #('CasinoModelSilverlight') ]
 ]
