@@ -74,12 +74,23 @@ CSNExporterAurelia >> visitPage: aPage [
 ]
 
 { #category : #visiting }
+CSNExporterAurelia >> visitUIButton: aButton [
+	exportStream
+		nextPutAll: '<button type="button">'.
+		aButton attributes
+		select: [ :attribute | attribute isKindOf: CSNUILabel ]
+		thenDo: [ :attribute | exportStream nextPutAll: (self visit: attribute) ].
+		exportStream nextPutAll: '</button>' , String crlf.
+		
+]
+
+{ #category : #visiting }
 CSNExporterAurelia >> visitUIContainer: aContainer [
 	exportStream
 		nextPutAll: '<div';
 		nextPutAll: (self attributesTagFor: aContainer);
 		nextPutAll: '><!-->widget non reconnu<-->';
-		nextPutAll: '></widget non reconnu>';
+		nextPutAll: '</widget non reconnu>';
 		nextPutAll: String crlf.
 	aContainer widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream
@@ -140,6 +151,30 @@ CSNExporterAurelia >> visitUISelect: anInputDate [
 		nextPutAll: (self attributesTagFor: anInputDate);
 		nextPutAll: '/>';
 		nextPutAll: String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUITable: aTable [
+	exportStream
+		nextPutAll: '<table' , (self attributesTagFor: aTable) , '>' , String crlf.
+	aTable widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</table>' , String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUITableCell: aTableCell [
+	exportStream
+		nextPutAll: '<td' , (self attributesTagFor: aTableCell) , '>' , String crlf.
+	aTableCell widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</td>' , String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUITableRow: aTableRow [
+	exportStream
+		nextPutAll: '<tr' , (self attributesTagFor: aTableRow) , '>' , String crlf.
+	aTableRow widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</tr>' , String crlf
 ]
 
 { #category : #visiting }
