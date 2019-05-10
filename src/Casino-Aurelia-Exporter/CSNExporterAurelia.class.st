@@ -74,6 +74,14 @@ CSNExporterAurelia >> visitPage: aPage [
 ]
 
 { #category : #visiting }
+CSNExporterAurelia >> visitUIBorder: aBorder [
+	exportStream
+		nextPutAll: '<div' , (self attributesTagFor: aBorder) , '>'; nextPutAll: String crlf.
+	aBorder widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</div>' , String crlf
+]
+
+{ #category : #visiting }
 CSNExporterAurelia >> visitUIButton: aButton [
 	exportStream
 		nextPutAll: '<button type="button">'.
@@ -82,6 +90,14 @@ CSNExporterAurelia >> visitUIButton: aButton [
 		thenDo: [ :attribute | exportStream nextPutAll: (self visit: attribute) ].
 		exportStream nextPutAll: '</button>' , String crlf.
 		
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUICanvas: aCanvas [
+	exportStream
+		nextPutAll: '<canvas' , (self attributesTagFor: aCanvas) , '>' ; nextPutAll: String crlf.
+	aCanvas widgets do: [ :aWidget | self visit: aWidget ].
+	exportStream nextPutAll: '</canvas>' , String crlf
 ]
 
 { #category : #visiting }
@@ -108,29 +124,58 @@ CSNExporterAurelia >> visitUIHeading1: aUIHeading1 [
 ]
 
 { #category : #visiting }
-CSNExporterAurelia >> visitUIInputDate: anInputDate [
+CSNExporterAurelia >> visitUIInputCheckbox: anInputCheckBox [
 	exportStream
-		nextPutAll: '<input type="date"' , (self attributesTagFor: anInputDate) , '/>' , String crlf
+		nextPutAll:
+			'<input type="checkbox"' , (self attributesTagFor: anInputCheckBox)
+				, '/>';
+		nextPutAll: String crlf
 ]
 
 { #category : #visiting }
-CSNExporterAurelia >> visitUIInputRadio: anInputDate [
+CSNExporterAurelia >> visitUIInputComboBox: anInputComboBox [
 	exportStream
 		nextPutAll:
-			'<input type="radio"' , (self attributesTagFor: anInputDate) , '/>'
-				, String crlf
+			'<input type="combobox"' , (self attributesTagFor: anInputComboBox)
+				, '/>';
+		nextPutAll: String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIInputDate: anInputDate [
+	exportStream
+		nextPutAll:
+			'<input type="date"' , (self attributesTagFor: anInputDate) , '/>';
+			nextPutAll: String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIInputListBox: anInputListBox [
+	exportStream
+		nextPutAll:
+			'<input type="listbox"' , (self attributesTagFor: anInputListBox)
+				, '/>';
+		nextPutAll: String crlf
+]
+
+{ #category : #visiting }
+CSNExporterAurelia >> visitUIInputRadio: anInputRadio [
+	exportStream
+		nextPutAll: '<input type="radio"' , (self attributesTagFor: anInputRadio) , '/>';
+		nextPutAll: String crlf
 ]
 
 { #category : #visiting }
 CSNExporterAurelia >> visitUIInputText: anInputText [
 	exportStream
-		nextPutAll: '<input' , (self attributesTagFor: anInputText) , '/>' , String crlf.
+		nextPutAll: '<input type="text"' , (self attributesTagFor: anInputText) , '/>';
+		nextPutAll: String crlf
 ]
 
 { #category : #visiting }
 CSNExporterAurelia >> visitUIPanel: aPanel [
 	exportStream
-		nextPutAll: '<div' , (self attributesTagFor: aPanel) , '>' , String crlf.
+		nextPutAll: '<div' , (self attributesTagFor: aPanel) , '>' ; nextPutAll: String crlf.
 	aPanel widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</div>' , String crlf
 ]
@@ -156,7 +201,7 @@ CSNExporterAurelia >> visitUISelect: anInputDate [
 { #category : #visiting }
 CSNExporterAurelia >> visitUITable: aTable [
 	exportStream
-		nextPutAll: '<table' , (self attributesTagFor: aTable) , '>' , String crlf.
+		nextPutAll: '<table' , (self attributesTagFor: aTable) , '>' ;nextPutAll: String crlf.
 	aTable widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</table>' , String crlf
 ]
@@ -164,7 +209,7 @@ CSNExporterAurelia >> visitUITable: aTable [
 { #category : #visiting }
 CSNExporterAurelia >> visitUITableCell: aTableCell [
 	exportStream
-		nextPutAll: '<td' , (self attributesTagFor: aTableCell) , '>' , String crlf.
+		nextPutAll: '<td' , (self attributesTagFor: aTableCell) , '>' ;nextPutAll: String crlf.
 	aTableCell widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</td>' , String crlf
 ]
@@ -172,7 +217,7 @@ CSNExporterAurelia >> visitUITableCell: aTableCell [
 { #category : #visiting }
 CSNExporterAurelia >> visitUITableRow: aTableRow [
 	exportStream
-		nextPutAll: '<tr' , (self attributesTagFor: aTableRow) , '>' , String crlf.
+		nextPutAll: '<tr' , (self attributesTagFor: aTableRow) , '>' ;nextPutAll: String crlf.
 	aTableRow widgets do: [ :aWidget | self visit: aWidget ].
 	exportStream nextPutAll: '</tr>' , String crlf
 ]
